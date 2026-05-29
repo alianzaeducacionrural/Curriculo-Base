@@ -77,32 +77,61 @@
   .sb-footer-text { font-size: 11px; color: var(--s400); }
 
   /* MAIN */
-  .main { flex: 1; display: flex; flex-direction: column; overflow-x: hidden; }
+  .main { flex: 1; display: flex; flex-direction: column; overflow-x: hidden; min-width: 0; }
 
   /* TOPBAR */
   .topbar {
     background: #fff; border-bottom: 1px solid var(--s200);
     padding: 0 24px; height: 52px;
     display: flex; align-items: center; justify-content: space-between;
-    flex-shrink: 0;
+    flex-shrink: 0; gap: 12px;
   }
-  .topbar-left { display: flex; flex-direction: column; gap: 1px; }
-  .topbar-title { font-size: 13px; font-weight: 600; color: var(--s900); letter-spacing: -0.01em; }
-  .topbar-sub { font-size: 11px; color: var(--s400); }
-  .topbar-right { display: flex; align-items: center; gap: 8px; }
+  .topbar-left { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .topbar-title { font-size: 13px; font-weight: 600; color: var(--s900); letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topbar-sub { font-size: 11px; color: var(--s400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topbar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .tb-badge {
     font-size: 11px; padding: 3px 8px; border-radius: 4px;
     font-weight: 600; font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
   }
   .tb-badge.tec { background: var(--ind100); color: #3730a3; }
   .tb-badge.tecn { background: var(--amb100); color: #78350f; }
   .tb-btn {
-    padding: 5px 10px; background: transparent;
+    padding: 6px 12px; background: transparent;
     border: 1px solid var(--s200); border-radius: 6px;
     font-family: 'Inter', sans-serif; font-size: 12px;
     color: var(--s500); cursor: pointer; transition: all 0.12s;
+    white-space: nowrap; -webkit-tap-highlight-color: transparent;
   }
   .tb-btn:hover { border-color: var(--s300); color: var(--s700); background: var(--s50); }
+
+  /* MOBILE CONTROL BAR */
+  .mob-bar {
+    display: none;
+    align-items: center; gap: 8px;
+    padding: 10px 16px;
+    background: #fff;
+    border-bottom: 1px solid var(--s200);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-shrink: 0;
+  }
+  .mob-bar::-webkit-scrollbar { display: none; }
+  .mob-group { display: flex; gap: 4px; flex-shrink: 0; }
+  .mob-sep { width: 1px; height: 22px; background: var(--s200); flex-shrink: 0; }
+  .mob-btn {
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--s200);
+    background: transparent;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+    color: var(--s500); cursor: pointer; transition: all 0.12s;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mob-btn:hover { background: var(--s100); color: var(--s700); }
+  .mob-btn.on { background: var(--ind50); border-color: var(--ind400); color: var(--ind600); font-weight: 600; }
 
   /* CONTENT */
   .content { padding: 24px; flex: 1; }
@@ -124,6 +153,7 @@
   .f-count {
     font-size: 11px; color: var(--s400);
     font-family: 'JetBrains Mono', monospace; margin-left: auto;
+    white-space: nowrap;
   }
 
   /* KPI ROW */
@@ -150,7 +180,8 @@
     padding: 14px 18px; border-bottom: 1px solid var(--s100);
   }
   .tbl-head-title { font-size: 13px; font-weight: 600; color: var(--s800); }
-  table { width: 100%; border-collapse: collapse; }
+  .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; min-width: 540px; }
   thead th {
     padding: 9px 16px; text-align: left;
     font-size: 10px; font-weight: 600;
@@ -185,7 +216,7 @@
     text-transform: uppercase; letter-spacing: 0.07em;
     color: var(--s400); margin-bottom: 10px;
   }
-  .det-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 6px; }
+  .det-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 6px; }
   .det-item {
     display: flex; justify-content: space-between; align-items: center;
     padding: 7px 10px; background: #fff;
@@ -200,10 +231,10 @@
     background: #fff; border: 1px solid var(--s200);
     border-radius: 9px; padding: 16px 18px; margin-bottom: 8px;
   }
-  .rc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .rc-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; gap: 12px; }
   .rc-ie { font-size: 13px; font-weight: 600; color: var(--s900); }
   .rc-mun { font-size: 11px; color: var(--s400); margin-top: 1px; }
-  .rc-stats { display: flex; gap: 20px; align-items: center; }
+  .rc-stats { display: flex; gap: 20px; align-items: center; flex-shrink: 0; }
   .rc-stat { text-align: right; }
   .rc-stat-val { font-size: 18px; font-weight: 600; font-family: 'JetBrains Mono', monospace; color: var(--s700); }
   .rc-stat-lbl { font-size: 10px; color: var(--s400); }
@@ -234,13 +265,34 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  /* ===== RESPONSIVE ===== */
+
   @media (max-width: 900px) {
     .sidebar { display: none; }
+    .mob-bar { display: flex; }
     .kpi-row { grid-template-columns: 1fr 1fr; }
+    .topbar-sub { display: none; }
   }
+
   @media (max-width: 600px) {
-    .kpi-row { grid-template-columns: 1fr; }
-    .content { padding: 16px; }
+    .topbar { padding: 0 16px; height: 50px; }
+    .content { padding: 14px; }
+    .kpi-row { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .kpi { padding: 12px 14px; }
+    .kpi-val { font-size: 22px; }
+    .filtros-row { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 14px; }
+    .f-sel { min-width: 0; width: 100%; font-size: 16px; padding: 10px 14px; }
+    .f-count { margin-left: 0; }
+    .det-grid { grid-template-columns: 1fr; }
+    .rc-top { flex-direction: column; gap: 8px; }
+    .rc-stats { gap: 16px; }
+    .state-box { padding: 40px 20px; }
+  }
+
+  @media (max-width: 420px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .kpi-val { font-size: 20px; }
+    .kpi-foot { display: none; }
   }
 </style>
 </head>
@@ -256,18 +308,18 @@
   </div>
   <div class="sb-nav">
     <div class="sb-label">Vista</div>
-    <button class="sb-item on" onclick="setVista('tabla', this)">
+    <button class="sb-item on" data-vista="tabla" onclick="setVista('tabla')">
       <div class="sb-item-dot"></div>Tabla de registros
     </button>
-    <button class="sb-item" onclick="setVista('resumen', this)">
+    <button class="sb-item" data-vista="resumen" onclick="setVista('resumen')">
       <div class="sb-item-dot"></div>Resumen por IE
     </button>
     <div class="sb-label" style="margin-top:12px">Tipo</div>
     <div class="tipo-sw">
-      <button class="tipo-sw-btn on" onclick="cambiarTipo('tecnico', this)">
+      <button class="tipo-sw-btn on" data-tipo="tecnico" onclick="cambiarTipo('tecnico')">
         <div class="tipo-pip"></div>Técnico
       </button>
-      <button class="tipo-sw-btn" onclick="cambiarTipo('tecnologo', this)">
+      <button class="tipo-sw-btn" data-tipo="tecnologo" onclick="cambiarTipo('tecnologo')">
         <div class="tipo-pip"></div>Tecnólogo
       </button>
     </div>
@@ -291,6 +343,20 @@
       <span class="tb-badge tec" id="topBadge">Técnico</span>
       <button class="tb-btn" onclick="recargar()">↻ Actualizar</button>
     </div>
+  </div>
+
+  <div class="mob-bar">
+    <div class="mob-group">
+      <button class="mob-btn on" data-vista="tabla" onclick="setVista('tabla')">Tabla</button>
+      <button class="mob-btn" data-vista="resumen" onclick="setVista('resumen')">Resumen</button>
+    </div>
+    <div class="mob-sep"></div>
+    <div class="mob-group">
+      <button class="mob-btn on" data-tipo="tecnico" onclick="cambiarTipo('tecnico')">Técnico</button>
+      <button class="mob-btn" data-tipo="tecnologo" onclick="cambiarTipo('tecnologo')">Tecnólogo</button>
+    </div>
+    <div class="mob-sep"></div>
+    <a class="mob-btn" href="index.html" style="text-decoration:none">+ Registrar</a>
   </div>
 
   <div class="content">
@@ -333,8 +399,10 @@
         <div class="tbl-head">
           <span class="tbl-head-title">Registros de sedes</span>
         </div>
-        <div id="bodyTabla">
-          <div class="state-box"><div class="ld-spin"></div>Cargando datos...</div>
+        <div class="tbl-scroll">
+          <div id="bodyTabla">
+            <div class="state-box"><div class="ld-spin"></div>Cargando datos...</div>
+          </div>
         </div>
       </div>
     </div>

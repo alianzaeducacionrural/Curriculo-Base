@@ -43,10 +43,9 @@ async function recargar() {
 // ============================================================
 //  CAMBIAR TIPO
 // ============================================================
-function cambiarTipo(t, btn) {
+function cambiarTipo(t) {
   tipoActual = t;
-  document.querySelectorAll('.tipo-sw-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
+  document.querySelectorAll('[data-tipo]').forEach(b => b.classList.toggle('on', b.dataset.tipo === t));
 
   const badge = document.getElementById('topBadge');
   badge.textContent = t === 'tecnico' ? 'Técnico' : 'Tecnólogo';
@@ -61,10 +60,9 @@ function cambiarTipo(t, btn) {
 // ============================================================
 //  CAMBIAR VISTA
 // ============================================================
-function setVista(v, btn) {
+function setVista(v) {
   vistaActual = v;
-  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
+  document.querySelectorAll('[data-vista]').forEach(b => b.classList.toggle('on', b.dataset.vista === v));
   document.getElementById('vTabla').style.display   = v === 'tabla'   ? 'block' : 'none';
   document.getElementById('vResumen').style.display = v === 'resumen' ? 'block' : 'none';
   render();
