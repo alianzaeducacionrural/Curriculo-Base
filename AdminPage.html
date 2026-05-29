@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Currículo Base</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --s900:#0f172a;--s800:#1e293b;--s700:#334155;--s600:#475569;
+    --s500:#64748b;--s400:#94a3b8;--s300:#cbd5e1;--s200:#e2e8f0;
+    --s100:#f1f5f9;--s50:#f8fafc;
+    --ind600:#4f46e5;--ind500:#6366f1;--ind400:#818cf8;
+    --ind100:#e0e7ff;--ind50:#eef2ff;
+    --amb500:#f59e0b;--amb100:#fef3c7;--amb200:#fde68a;
+    --em500:#10b981;--em100:#d1fae5;--em200:#a7f3d0;
+    --re500:#ef4444;--re100:#fee2e2;--re200:#fca5a5;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--s50);
+    color: var(--s800);
+    font-size: 13px;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 220px; background: #fff;
+    border-right: 1px solid var(--s200);
+    display: flex; flex-direction: column;
+    flex-shrink: 0; position: sticky;
+    top: 0; height: 100vh; overflow-y: auto;
+  }
+  .sb-top { padding: 18px 16px 14px; border-bottom: 1px solid var(--s100); }
+  .sb-brand { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+  .sb-dot { width: 7px; height: 7px; background: var(--ind600); border-radius: 50%; }
+  .sb-name { font-size: 13px; font-weight: 600; color: var(--s900); letter-spacing: -0.01em; }
+  .sb-sub { font-size: 11px; color: var(--s400); margin-left: 15px; }
+  .sb-nav { padding: 10px 8px; flex: 1; }
+  .sb-label {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--s400); padding: 4px 8px 6px;
+  }
+  .sb-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 8px; border-radius: 6px;
+    font-size: 13px; color: var(--s500);
+    cursor: pointer; transition: all 0.12s;
+    border: none; background: transparent;
+    width: 100%; text-align: left;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none; margin-bottom: 1px;
+  }
+  .sb-item:hover { background: var(--s100); color: var(--s700); }
+  .sb-item.on { background: var(--ind50); color: var(--ind600); font-weight: 500; }
+  .sb-item-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--s300); flex-shrink: 0; }
+  .sb-item.on .sb-item-dot { background: var(--ind600); }
+  .tipo-sw { display: flex; flex-direction: column; gap: 4px; padding: 4px 0; }
+  .tipo-sw-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 8px; border-radius: 6px;
+    border: 1px solid var(--s200); background: transparent;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+    color: var(--s500); cursor: pointer; transition: all 0.12s;
+    width: 100%; text-align: left;
+  }
+  .tipo-sw-btn:hover { border-color: var(--s300); color: var(--s700); background: var(--s50); }
+  .tipo-sw-btn.on { border-color: var(--ind400); background: var(--ind50); color: var(--ind600); }
+  .tipo-pip { width: 7px; height: 7px; border-radius: 2px; background: var(--s300); flex-shrink: 0; }
+  .tipo-sw-btn.on .tipo-pip { background: var(--ind600); }
+  .sb-footer { padding: 12px 16px; border-top: 1px solid var(--s100); }
+  .sb-footer-text { font-size: 11px; color: var(--s400); }
+
+  /* MAIN */
+  .main { flex: 1; display: flex; flex-direction: column; overflow-x: hidden; }
+
+  /* TOPBAR */
+  .topbar {
+    background: #fff; border-bottom: 1px solid var(--s200);
+    padding: 0 24px; height: 52px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .topbar-left { display: flex; flex-direction: column; gap: 1px; }
+  .topbar-title { font-size: 13px; font-weight: 600; color: var(--s900); letter-spacing: -0.01em; }
+  .topbar-sub { font-size: 11px; color: var(--s400); }
+  .topbar-right { display: flex; align-items: center; gap: 8px; }
+  .tb-badge {
+    font-size: 11px; padding: 3px 8px; border-radius: 4px;
+    font-weight: 600; font-family: 'JetBrains Mono', monospace;
+  }
+  .tb-badge.tec { background: var(--ind100); color: #3730a3; }
+  .tb-badge.tecn { background: var(--amb100); color: #78350f; }
+  .tb-btn {
+    padding: 5px 10px; background: transparent;
+    border: 1px solid var(--s200); border-radius: 6px;
+    font-family: 'Inter', sans-serif; font-size: 12px;
+    color: var(--s500); cursor: pointer; transition: all 0.12s;
+  }
+  .tb-btn:hover { border-color: var(--s300); color: var(--s700); background: var(--s50); }
+
+  /* CONTENT */
+  .content { padding: 24px; flex: 1; }
+
+  /* FILTROS */
+  .filtros-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 20px; flex-wrap: wrap;
+  }
+  .f-sel {
+    background: #fff; border: 1px solid var(--s200);
+    border-radius: 7px; padding: 7px 12px;
+    font-family: 'Inter', sans-serif; font-size: 12px;
+    color: var(--s700); outline: none;
+    transition: border-color 0.12s;
+    appearance: none; -webkit-appearance: none; min-width: 160px;
+  }
+  .f-sel:focus { border-color: var(--ind500); }
+  .f-count {
+    font-size: 11px; color: var(--s400);
+    font-family: 'JetBrains Mono', monospace; margin-left: auto;
+  }
+
+  /* KPI ROW */
+  .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+  .kpi { background: #fff; border: 1px solid var(--s200); border-radius: 9px; padding: 14px 16px; }
+  .kpi-label {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--s400); margin-bottom: 6px;
+  }
+  .kpi-val {
+    font-size: 26px; font-weight: 600; line-height: 1;
+    font-family: 'JetBrains Mono', monospace; color: var(--s800);
+  }
+  .kpi-val.ind { color: var(--ind600); }
+  .kpi-val.amb { color: var(--amb500); }
+  .kpi-val.em  { color: var(--em500); }
+  .kpi-foot { font-size: 10px; color: var(--s400); margin-top: 4px; }
+
+  /* TABLA */
+  .tbl-wrap { background: #fff; border: 1px solid var(--s200); border-radius: 10px; overflow: hidden; }
+  .tbl-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px; border-bottom: 1px solid var(--s100);
+  }
+  .tbl-head-title { font-size: 13px; font-weight: 600; color: var(--s800); }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    padding: 9px 16px; text-align: left;
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--s400); border-bottom: 1px solid var(--s100);
+    white-space: nowrap; background: var(--s50);
+  }
+  tbody tr { border-bottom: 1px solid var(--s100); cursor: pointer; transition: background 0.1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--ind50); }
+  tbody td { padding: 10px 16px; font-size: 12px; color: var(--s600); vertical-align: middle; }
+  .td-mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .td-bold { font-weight: 600; color: var(--s800); }
+  .kit-chip {
+    display: inline-flex; align-items: center;
+    padding: 3px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .kit-chip.hi { background: var(--em100); color: #065f46; border: 1px solid var(--em200); }
+  .kit-chip.md { background: var(--amb100); color: #78350f; border: 1px solid var(--amb200); }
+  .kit-chip.lo { background: var(--re100); color: #991b1b; border: 1px solid var(--re200); }
+  .expand-icon { font-size: 11px; color: var(--s400); transition: transform 0.15s; display: inline-block; }
+  .expand-icon.open { transform: rotate(90deg); }
+
+  /* DETALLE FILA */
+  .fila-det { display: none; }
+  .fila-det.vis { display: table-row; }
+  .det-inner { padding: 14px 18px; background: var(--s50); border-top: 1px solid var(--s100); }
+  .det-title {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--s400); margin-bottom: 10px;
+  }
+  .det-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 6px; }
+  .det-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 7px 10px; background: #fff;
+    border: 1px solid var(--s200); border-radius: 6px;
+  }
+  .det-libro { font-size: 11px; color: var(--s500); flex: 1; margin-right: 10px; line-height: 1.3; }
+  .det-cant { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: var(--s700); }
+  .det-cant.min { color: var(--re500); }
+
+  /* RESUMEN IE */
+  .resumen-card {
+    background: #fff; border: 1px solid var(--s200);
+    border-radius: 9px; padding: 16px 18px; margin-bottom: 8px;
+  }
+  .rc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .rc-ie { font-size: 13px; font-weight: 600; color: var(--s900); }
+  .rc-mun { font-size: 11px; color: var(--s400); margin-top: 1px; }
+  .rc-stats { display: flex; gap: 20px; align-items: center; }
+  .rc-stat { text-align: right; }
+  .rc-stat-val { font-size: 18px; font-weight: 600; font-family: 'JetBrains Mono', monospace; color: var(--s700); }
+  .rc-stat-lbl { font-size: 10px; color: var(--s400); }
+  .rc-sedes { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sede-pill {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 10px; background: var(--s50);
+    border: 1px solid var(--s200); border-radius: 4px; font-size: 11px;
+  }
+  .sede-pill-name { color: var(--s500); }
+  .sede-pill-kits { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; }
+  .sede-pill-kits.hi { color: var(--em500); }
+  .sede-pill-kits.md { color: var(--amb500); }
+  .sede-pill-kits.lo { color: var(--re500); }
+
+  /* ESTADO */
+  .state-box {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 60px; gap: 12px; color: var(--s400); font-size: 13px;
+  }
+  .ld-spin {
+    width: 24px; height: 24px;
+    border: 2px solid var(--s200);
+    border-top-color: var(--ind600);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .kpi-row { grid-template-columns: 1fr; }
+    .content { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-top">
+    <div class="sb-brand">
+      <div class="sb-dot"></div>
+      <span class="sb-name">Currículo Base</span>
+    </div>
+    <div class="sb-sub">La Universidad en el Campo</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-label">Vista</div>
+    <button class="sb-item on" onclick="setVista('tabla', this)">
+      <div class="sb-item-dot"></div>Tabla de registros
+    </button>
+    <button class="sb-item" onclick="setVista('resumen', this)">
+      <div class="sb-item-dot"></div>Resumen por IE
+    </button>
+    <div class="sb-label" style="margin-top:12px">Tipo</div>
+    <div class="tipo-sw">
+      <button class="tipo-sw-btn on" onclick="cambiarTipo('tecnico', this)">
+        <div class="tipo-pip"></div>Técnico
+      </button>
+      <button class="tipo-sw-btn" onclick="cambiarTipo('tecnologo', this)">
+        <div class="tipo-pip"></div>Tecnólogo
+      </button>
+    </div>
+    <div class="sb-label" style="margin-top:12px">Accesos</div>
+    <button class="sb-item" onclick="irFormulario()">
+      <div class="sb-item-dot"></div>Ir al formulario
+    </button>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-footer-text">Comité de Cafeteros · Caldas</div>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-title">Seguimiento a Currículo Base</span>
+      <span class="topbar-sub">La Universidad en el Campo — Panel de administración</span>
+    </div>
+    <div class="topbar-right">
+      <span class="tb-badge tec" id="topBadge">Técnico</span>
+      <button class="tb-btn" onclick="recargar()">↻ Actualizar</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="filtros-row">
+      <select class="f-sel" id="fMun" onchange="filtrar()">
+        <option value="">Todos los municipios</option>
+      </select>
+      <select class="f-sel" id="fIE" onchange="filtrar()">
+        <option value="">Todas las IEs</option>
+      </select>
+      <span class="f-count" id="fCount"></span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-label">Sedes</div>
+        <div class="kpi-val ind" id="kSedes">–</div>
+        <div class="kpi-foot">registros totales</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Libros</div>
+        <div class="kpi-val" id="kLibros">–</div>
+        <div class="kpi-foot">unidades sumadas</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Kits prom.</div>
+        <div class="kpi-val amb" id="kKits">–</div>
+        <div class="kpi-foot">promedio entre sedes</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Municipios</div>
+        <div class="kpi-val em" id="kMuns">–</div>
+        <div class="kpi-foot">con registros</div>
+      </div>
+    </div>
+
+    <div id="vTabla">
+      <div class="tbl-wrap">
+        <div class="tbl-head">
+          <span class="tbl-head-title">Registros de sedes</span>
+        </div>
+        <div id="bodyTabla">
+          <div class="state-box"><div class="ld-spin"></div>Cargando datos...</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="vResumen" style="display:none">
+      <div id="bodyResumen">
+        <div class="state-box"><div class="ld-spin"></div>Calculando...</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let raw = { tecnico: [], tecnologo: [] };
+  let tipoActual = 'tecnico';
+  let vistaActual = 'tabla';
+
+  window.onload = () => {
+    google.script.run.withSuccessHandler(d => {
+      raw = d;
+      poblarFiltros();
+      render();
+    }).getAdminData();
+  };
+
+  function irFormulario() {
+    google.script.run.withSuccessHandler(url => {
+      window.open(url, '_blank');
+    }).getUrl();
+  }
+
+  function recargar() {
+    document.getElementById('bodyTabla').innerHTML =
+      '<div class="state-box"><div class="ld-spin"></div>Actualizando...</div>';
+    google.script.run.withSuccessHandler(d => { raw = d; render(); }).getAdminData();
+  }
+
+  function cambiarTipo(t, btn) {
+    tipoActual = t;
+    document.querySelectorAll('.tipo-sw-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    const badge = document.getElementById('topBadge');
+    badge.textContent = t === 'tecnico' ? 'Técnico' : 'Tecnólogo';
+    badge.className = 'tb-badge ' + (t === 'tecnico' ? 'tec' : 'tecn');
+    document.getElementById('fMun').value = '';
+    document.getElementById('fIE').value = '';
+    poblarFiltros();
+    render();
+  }
+
+  function setVista(v, btn) {
+    vistaActual = v;
+    document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    document.getElementById('vTabla').style.display = v === 'tabla' ? 'block' : 'none';
+    document.getElementById('vResumen').style.display = v === 'resumen' ? 'block' : 'none';
+    render();
+  }
+
+  function poblarFiltros() {
+    const d = raw[tipoActual];
+    const muns = [...new Set(d.map(r => r['Municipio']))].sort();
+    const sM = document.getElementById('fMun');
+    sM.innerHTML = '<option value="">Todos los municipios</option>';
+    muns.forEach(m => sM.appendChild(new Option(m, m)));
+    document.getElementById('fIE').innerHTML = '<option value="">Todas las IEs</option>';
+  }
+
+  function filtrar() {
+    const mun = document.getElementById('fMun').value;
+    const d = raw[tipoActual];
+    const sIE = document.getElementById('fIE');
+    const ieAct = sIE.value;
+    const ies = mun
+      ? [...new Set(d.filter(r => r['Municipio'] === mun).map(r => r['IE']))].sort()
+      : [];
+    sIE.innerHTML = '<option value="">Todas las IEs</option>';
+    ies.forEach(ie => sIE.appendChild(new Option(ie, ie)));
+    if (ies.includes(ieAct)) sIE.value = ieAct;
+    render();
+  }
+
+  function getFiltrados() {
+    const mun = document.getElementById('fMun').value;
+    const ie = document.getElementById('fIE').value;
+    return raw[tipoActual].filter(r =>
+      (!mun || r['Municipio'] === mun) && (!ie || r['IE'] === ie)
+    );
+  }
+
+  function render() {
+    const d = getFiltrados();
+    actualizarKPIs(d);
+    document.getElementById('fCount').textContent = d.length + ' registros';
+    if (vistaActual === 'tabla') renderTabla(d);
+    else renderResumen(d);
+  }
+
+  function actualizarKPIs(d) {
+    const tl = d.reduce((s, r) => s + r._libros.reduce((a, l) => a + l.cantidad, 0), 0);
+    const kp = d.length ? Math.round(d.reduce((s, r) => s + r._kits, 0) / d.length) : 0;
+    const mn = new Set(d.map(r => r['Municipio'])).size;
+    document.getElementById('kSedes').textContent = d.length;
+    document.getElementById('kLibros').textContent = tl.toLocaleString();
+    document.getElementById('kKits').textContent = kp;
+    document.getElementById('kMuns').textContent = mn;
+  }
+
+  function chipClass(k) { return k >= 10 ? 'hi' : k >= 5 ? 'md' : 'lo'; }
+
+  function renderTabla(d) {
+    const el = document.getElementById('bodyTabla');
+    if (!d.length) {
+      el.innerHTML = '<div class="state-box">Sin registros con los filtros aplicados</div>';
+      return;
+    }
+    el.innerHTML = `<table>
+      <thead><tr>
+        <th>Municipio</th><th>IE</th><th>Sede</th><th>Padrino</th>
+        <th>Fecha</th><th>Libros</th><th>Kits</th><th></th>
+      </tr></thead>
+      <tbody>
+        ${d.map((r, i) => {
+          const tot = r._libros.reduce((s, l) => s + l.cantidad, 0);
+          const cc = chipClass(r._kits);
+          return `
+            <tr onclick="togDet(${i})">
+              <td>${r['Municipio']}</td>
+              <td>${r['IE']}</td>
+              <td class="td-bold">${r['Sede']}</td>
+              <td style="color:var(--s400)">${r['Padrino'] || '–'}</td>
+              <td class="td-mono">${r['Fecha'] || '–'}</td>
+              <td class="td-mono">${tot}</td>
+              <td><span class="kit-chip ${cc}">${r._kits}</span></td>
+              <td><span class="expand-icon" id="xi${i}">›</span></td>
+            </tr>
+            <tr class="fila-det" id="det${i}">
+              <td colspan="8">
+                <div class="det-inner">
+                  <div class="det-title">${r['Sede']} — inventario completo</div>
+                  <div class="det-grid">
+                    ${r._libros.map(l => `
+                      <div class="det-item">
+                        <span class="det-libro">${l.libro}</span>
+                        <span class="det-cant ${l.cantidad === r._kits && r._kits > 0 ? 'min' : ''}">${l.cantidad}</span>
+                      </div>`).join('')}
+                  </div>
+                </div>
+              </td>
+            </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+  }
+
+  function togDet(i) {
+    document.getElementById('det' + i).classList.toggle('vis');
+    document.getElementById('xi' + i).classList.toggle('open');
+  }
+
+  function renderResumen(d) {
+    const el = document.getElementById('bodyResumen');
+    if (!d.length) {
+      el.innerHTML = '<div class="state-box">Sin registros</div>';
+      return;
+    }
+    const porIE = {};
+    d.forEach(r => {
+      const k = r['Municipio'] + '||' + r['IE'];
+      if (!porIE[k]) porIE[k] = { mun: r['Municipio'], ie: r['IE'], sedes: [] };
+      porIE[k].sedes.push(r);
+    });
+    el.innerHTML = Object.values(porIE).map(g => {
+      const tl = g.sedes.reduce((s, r) => s + r._libros.reduce((a, l) => a + l.cantidad, 0), 0);
+      const kp = Math.round(g.sedes.reduce((s, r) => s + r._kits, 0) / g.sedes.length);
+      const cc = chipClass(kp);
+      const colorKp = cc === 'hi' ? 'var(--em500)' : cc === 'md' ? 'var(--amb500)' : 'var(--re500)';
+      return `<div class="resumen-card">
+        <div class="rc-top">
+          <div>
+            <div class="rc-ie">${g.ie}</div>
+            <div class="rc-mun">${g.mun} · ${g.sedes.length} sede${g.sedes.length > 1 ? 's' : ''}</div>
+          </div>
+          <div class="rc-stats">
+            <div class="rc-stat">
+              <div class="rc-stat-val">${tl.toLocaleString()}</div>
+              <div class="rc-stat-lbl">libros</div>
+            </div>
+            <div class="rc-stat">
+              <div class="rc-stat-val" style="color:${colorKp}">${kp}</div>
+              <div class="rc-stat-lbl">kits prom.</div>
+            </div>
+          </div>
+        </div>
+        <div class="rc-sedes">
+          ${g.sedes.map(s => `
+            <div class="sede-pill">
+              <span class="sede-pill-name">${s['Sede']}</span>
+              <span class="sede-pill-kits ${chipClass(s._kits)}">${s._kits} kits</span>
+            </div>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+  }
+</script>
+</body>
+</html>
